@@ -20,7 +20,7 @@ const Provider: FC<Props> = ({ children }) => {
       body: JSON.stringify(user),
     });
     const data = await results.json();
-    console.log("user is", data);
+    setUserDetail(data.result);
   };
 
   return (
