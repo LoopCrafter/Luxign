@@ -25,7 +25,7 @@ const Provider: FC<Props> = ({ children }) => {
 
   return (
     <UserDetail.Provider value={{ userDetail, setUserDetail }}>
-      {children};
+      {children}
     </UserDetail.Provider>
   );
 };

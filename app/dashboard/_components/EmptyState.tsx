@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const EmptyState = () => {
@@ -15,9 +16,11 @@ const EmptyState = () => {
       <h3 className="font-medium text-lg text-gray-500">
         Create New AI Interior Design for your room
       </h3>
-      <Button>
-        <Plus /> Redesign Room
-      </Button>
+      <Link href="/dashboard/create-new">
+        <Button>
+          <Plus /> Redesign Room
+        </Button>
+      </Link>
     </div>
   );
 };
