@@ -4,9 +4,10 @@ import { ChangeEvent, FC, useState } from "react";
 
 type Props = {
   handleSelectedImage: (file: File) => void;
+  error?: string;
 };
 
-const ImageSelection: FC<Props> = ({ handleSelectedImage }) => {
+const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>();
   const onFileSelected = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target;
@@ -49,6 +50,7 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage }) => {
           onChange={onFileSelected}
         />
       </div>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 };

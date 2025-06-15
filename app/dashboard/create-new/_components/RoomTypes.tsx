@@ -32,8 +32,9 @@ const roomTypes = [
 
 type Props = {
   selectedRoomType: (value: string) => void;
+  error?: string;
 };
-const RoomTypes: FC<Props> = ({ selectedRoomType }) => {
+const RoomTypes: FC<Props> = ({ selectedRoomType, error }) => {
   return (
     <div>
       <label className="text-slate-400">Select Room Type *</label>
@@ -49,6 +50,7 @@ const RoomTypes: FC<Props> = ({ selectedRoomType }) => {
           ))}
         </SelectContent>
       </Select>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 };

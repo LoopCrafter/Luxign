@@ -37,9 +37,10 @@ const designs = [
 
 type Props = {
   selectDesignType: (value: string) => void;
+  error?: string;
 };
 
-const DesignType: FC<Props> = ({ selectDesignType }) => {
+const DesignType: FC<Props> = ({ selectDesignType, error }) => {
   const [selectedDesignType, setSelectedDesignType] = useState("");
 
   const handleSelectDesignType = (value: string) => {
@@ -73,6 +74,7 @@ const DesignType: FC<Props> = ({ selectDesignType }) => {
           );
         })}
       </div>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 };
