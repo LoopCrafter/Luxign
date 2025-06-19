@@ -17,7 +17,12 @@ const FormSchema = z.object({
 type FormSchema = z.infer<typeof FormSchema>;
 
 const CreateNewDesignPage = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    image: File | null;
+    roomType: string;
+    designType: string;
+    additionalReq: string;
+  }>({
     image: null,
     roomType: "",
     designType: "",
@@ -32,7 +37,7 @@ const CreateNewDesignPage = () => {
     setFormErrors((prev) => ({ ...prev, [key]: "" }));
   };
 
-  const validateForm = () => {
+  const validateForm = async () => {
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const zodErrors: typeof formErrors = {};
@@ -43,7 +48,39 @@ const CreateNewDesignPage = () => {
       setFormErrors(zodErrors);
       return false;
     }
+
+    const url = await uploadImage();
+    const { roomType, designType, additionalReq } = formData;
+    const res = await fetch("/api/room-design", {
+      method: "POST",
+      body: JSON.stringify({
+        image: url,
+        roomType: roomType,
+        designType: designType,
+        additionalReq: additionalReq,
+      }),
+    });
+    const data = await res.json();
+    console.log(data);
     return true;
+  };
+
+  const uploadImage = async () => {
+    const formDataImage = new FormData();
+    const imageFile = formData.image;
+    if (imageFile instanceof File) {
+      formDataImage.append("file", imageFile);
+    }
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formDataImage,
+      });
+      const data = await res.json();
+      return data.url;
+    } catch (e) {
+      throw new Error("something is wrong");
+    }
   };
 
   return (
