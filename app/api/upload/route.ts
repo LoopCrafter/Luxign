@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         {
           public_id: publicId,
           resource_type: "image",
-          // type: "authenticated",
+          type: "upload",
           folder: "room-design",
         },
         (error, result) => {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     const result = await uploadPromise;
 
     const signedUrl = cloudinary.url(result.public_id, {
-      type: "authenticated",
+      // type: "authenticated",
       sign_url: true,
       expires_at: Math.floor(Date.now() / 1000) + 5 * 60,
     });
