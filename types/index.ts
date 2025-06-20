@@ -5,3 +5,12 @@ export type User = {
   imageUrl: string;
   createdAt: string;
 };
+
+export type RoomType = {
+  roomType: string;
+  designType: string;
+  userEmail: string;
+  originalImage: string;
+  aiImage: string;
+  id: number;
+};
