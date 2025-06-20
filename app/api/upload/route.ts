@@ -12,20 +12,30 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const file = formData.get("file");
 
-    if (!file || typeof file === "string") {
+    if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    let buffer: Buffer;
     const timestamp = Date.now();
-    const publicId = `${timestamp}_row`;
+    let publicId = `${timestamp}_row`;
+
+    if (typeof file === "string") {
+      // Base64 case
+      const base64Data = file.replace(/^data:image\/\w+;base64,/, "");
+      buffer = Buffer.from(base64Data, "base64");
+      publicId = `${timestamp}`;
+    } else {
+      // Blob/file case
+      const arrayBuffer = await file.arrayBuffer();
+      buffer = Buffer.from(arrayBuffer);
+    }
+
     const uploadPromise = new Promise<any>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           public_id: publicId,
           resource_type: "image",
-          type: "upload",
           folder: "room-design",
         },
         (error, result) => {
@@ -39,7 +49,6 @@ export async function POST(request: Request) {
     const result = await uploadPromise;
 
     const signedUrl = cloudinary.url(result.public_id, {
-      // type: "authenticated",
       sign_url: true,
       expires_at: Math.floor(Date.now() / 1000) + 5 * 60,
     });
