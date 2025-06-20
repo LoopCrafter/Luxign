@@ -7,6 +7,8 @@ import RoomTypes from "./_components/RoomTypes";
 import { useState } from "react";
 import { z } from "zod";
 import { useUser } from "@clerk/nextjs";
+import CustomLoading from "./_components/CustomLoading";
+import AiOutputDialog from "../_components/AiOutputDialog";
 
 const FormSchema = z.object({
   image: z.instanceof(File, { message: "Please upload an image" }),
@@ -19,6 +21,10 @@ type FormSchema = z.infer<typeof FormSchema>;
 
 const CreateNewDesignPage = () => {
   const { user } = useUser();
+  const [loading, setLoading] = useState(false);
+  const [aiImageOutputUrl, setAiImageOutputUrl] = useState("");
+  const [originalImageUrl, setOriginalImageUrl] = useState("");
+  const [showAiOutputDialog, setShowAiOutputDialog] = useState(false);
   const [formData, setFormData] = useState<{
     image: File | null;
     roomType: string;
@@ -50,21 +56,28 @@ const CreateNewDesignPage = () => {
       setFormErrors(zodErrors);
       return false;
     }
-
-    const url = await uploadImage();
-    const { roomType, designType, additionalReq } = formData;
-    const res = await fetch("/api/room-design", {
-      method: "POST",
-      body: JSON.stringify({
-        image: url,
-        roomType: roomType,
-        designType: designType,
-        additionalReq: additionalReq,
-        userEmail: user?.primaryEmailAddress?.emailAddress,
-      }),
-    });
-    const data = await res.json();
-    return true;
+    setLoading(true);
+    try {
+      const url = await uploadImage();
+      const { roomType, designType, additionalReq } = formData;
+      const res = await fetch("/api/room-design", {
+        method: "POST",
+        body: JSON.stringify({
+          image: url,
+          roomType: roomType,
+          designType: designType,
+          additionalReq: additionalReq,
+          userEmail: user?.primaryEmailAddress?.emailAddress,
+        }),
+      });
+      const data = await res.json();
+      setAiImageOutputUrl(data.results);
+      setOriginalImageUrl(url);
+    } catch (e) {
+    } finally {
+      setLoading(false);
+      setShowAiOutputDialog(true);
+    }
   };
 
   const uploadImage = async () => {
@@ -123,6 +136,13 @@ const CreateNewDesignPage = () => {
           </p>
         </div>
       </div>
+      <CustomLoading loading={loading} />
+      <AiOutputDialog
+        openDialog={showAiOutputDialog}
+        setCloseDialog={() => setShowAiOutputDialog(false)}
+        originalImage={originalImageUrl}
+        aiGeneratedImage={aiImageOutputUrl}
+      />
     </div>
   );
 };

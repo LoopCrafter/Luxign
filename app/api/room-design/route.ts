@@ -53,10 +53,9 @@ export async function POST(request: Request) {
         userEmail,
       })
       .returning({ id: AiGeneratedImage.id });
-    console.log("++++", dbResult);
     return NextResponse.json(
       {
-        results: dbResult,
+        results: finalImageUrl,
       },
       { status: 200 }
     );
