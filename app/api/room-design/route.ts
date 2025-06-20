@@ -1,4 +1,7 @@
+import { db } from "@/db";
+import { AiGeneratedImage } from "@/db/schema";
 import { convertImageUrlToBase64 } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 const replicate = new Replicate({
@@ -6,7 +9,8 @@ const replicate = new Replicate({
 });
 
 export async function POST(request: Request) {
-  const { image, roomType, designType, additionalReq } = await request.json();
+  const { image, roomType, designType, additionalReq, userEmail } =
+    await request.json();
   //convert image to AI image
   try {
     const input = {
@@ -38,9 +42,21 @@ export async function POST(request: Request) {
     );
     const uploadResult = await uploadResponse.json();
     const finalImageUrl = uploadResult.url;
+
+    const dbResult = await db
+      .insert(AiGeneratedImage)
+      .values({
+        roomType,
+        designType,
+        originalImage: image,
+        aiImage: finalImageUrl,
+        userEmail,
+      })
+      .returning({ id: AiGeneratedImage.id });
+    console.log("++++", dbResult);
     return NextResponse.json(
       {
-        resutls: finalImageUrl,
+        results: dbResult,
       },
       { status: 200 }
     );
@@ -53,10 +69,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-  // await writeFile("output.png", output);
-  // convert url to base64url
-
-  //save base64 to cloudinary
-
-  //save all to database
 }

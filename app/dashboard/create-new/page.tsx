@@ -6,6 +6,7 @@ import ImageSelection from "./_components/ImageSelection";
 import RoomTypes from "./_components/RoomTypes";
 import { useState } from "react";
 import { z } from "zod";
+import { useUser } from "@clerk/nextjs";
 
 const FormSchema = z.object({
   image: z.instanceof(File, { message: "Please upload an image" }),
@@ -17,6 +18,7 @@ const FormSchema = z.object({
 type FormSchema = z.infer<typeof FormSchema>;
 
 const CreateNewDesignPage = () => {
+  const { user } = useUser();
   const [formData, setFormData] = useState<{
     image: File | null;
     roomType: string;
@@ -58,6 +60,7 @@ const CreateNewDesignPage = () => {
         roomType: roomType,
         designType: designType,
         additionalReq: additionalReq,
+        userEmail: user?.primaryEmailAddress?.emailAddress,
       }),
     });
     const data = await res.json();

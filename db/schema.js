@@ -9,3 +9,12 @@ export const Users = pgTable("users", {
   createdAt: timestamp({ mode: "date" }).defaultNow().notNull(),
   lastVisitTime: timestamp({ mode: "date" }).defaultNow().notNull(),
 });
+
+export const AiGeneratedImage = pgTable("aiGeneratedImage", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  roomType: varchar("roomType").notNull(),
+  designType: varchar("designType").notNull(),
+  originalImage: varchar("originalImage").notNull(),
+  aiImage: varchar("aiImage").notNull(),
+  userEmail: varchar("userEmail", { length: 255 }).notNull(),
+});
