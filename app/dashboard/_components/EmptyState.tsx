@@ -1,3 +1,4 @@
+import TransitionLink from "@/components/ui/TransitionLink";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Image from "next/image";
@@ -16,11 +17,11 @@ const EmptyState = () => {
       <h3 className="font-medium text-lg text-gray-500">
         Create New AI Interior Design for your room
       </h3>
-      <Link href="/dashboard/create-new">
+      <TransitionLink href="/dashboard/create-new">
         <Button>
           <Plus /> Redesign Room
         </Button>
-      </Link>
+      </TransitionLink>
     </div>
   );
 };

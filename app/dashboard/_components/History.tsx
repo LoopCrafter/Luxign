@@ -9,6 +9,7 @@ import Link from "next/link";
 import RoomDesignCard from "./RoomDesignCard";
 import { RoomType } from "@/types";
 import AiOutputDialog from "./AiOutputDialog";
+import TransitionLink from "@/components/ui/TransitionLink";
 
 const History = () => {
   const { user } = useUser();
@@ -44,11 +45,12 @@ const History = () => {
     <div>
       <div className="flex justify-between items-center">
         <h2 className="font-bold text-xl">Hello, {user?.fullName}</h2>
-        <Link href="/dashboard/create-new">
+
+        <TransitionLink href="/dashboard/create-new">
           <Button>
             <Plus /> Redesign Room
           </Button>
-        </Link>
+        </TransitionLink>
       </div>
 
       {loading ? (

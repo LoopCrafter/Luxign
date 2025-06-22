@@ -1,20 +1,22 @@
 "use client";
+import TransitionLink from "@/components/ui/TransitionLink";
 import { Button } from "@/components/ui/button";
 import { useUserDetail } from "@/hooks";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const Header = () => {
   const { userDetail } = useUserDetail();
 
   return (
     <div className="p-5 shadow-sm flex justify-between items-center">
-      <div className="flex items-center gap-2">
-        <Image src="/logo.svg" alt="Logo" width={40} height={40} />
-        <h2 className="font-bold text-lg">Luxign</h2>
-      </div>
+      <TransitionLink href="/dashboard">
+        <button className="flex items-center gap-2">
+          <Image src="/logo.svg" alt="Logo" width={40} height={40} />
+          <h2 className="font-bold text-lg">Luxign</h2>
+        </button>
+      </TransitionLink>
       <Link href="/dashboard/buy-credit">
         <Button variant="ghost" className="rounded-full text-primary">
           Buy More Credits
