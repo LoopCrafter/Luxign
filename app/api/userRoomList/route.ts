@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
@@ -18,11 +18,11 @@ export async function GET() {
   if (!userEmail) {
     return NextResponse.json(
       { error: "User email not found" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
-  const result = await db
+  const result = await getDb()
     .select()
     .from(AiGeneratedImage)
     .where(eq(AiGeneratedImage.userEmail, userEmail));

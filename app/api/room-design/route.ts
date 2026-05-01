@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
 import { convertImageUrlToBase64 } from "@/lib/utils";
 import { NextResponse } from "next/server";
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const uploadResult = await uploadResponse.json();
     const finalImageUrl = uploadResult.url;
 
-    await db
+    await getDb()
       .insert(AiGeneratedImage)
       .values({
         roomType,
