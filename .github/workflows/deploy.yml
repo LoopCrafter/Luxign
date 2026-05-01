@@ -24,6 +24,7 @@ jobs:
           docker build \
             --build-arg NEXT_PUBLIC_REPLICATE_API_TOKEN="${{ secrets.NEXT_PUBLIC_REPLICATE_API_TOKEN }}" \
             --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" \
+            --build-arg NEXT_PUBLIC_BASE_URL="${{ secrets.NEXT_PUBLIC_BASE_URL }}" \
             -t ${{ secrets.DOCKER_USER }}/luxign:latest .
 
       - name: Push image

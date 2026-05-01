@@ -2,17 +2,13 @@ import { getDb } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
 import { convertImageUrlToBase64 } from "@/lib/utils";
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 import Replicate from "replicate";
 const replicate = new Replicate({
   auth: process.env.NEXT_PUBLIC_REPLICATE_API_TOKEN!,
 });
 
 export async function POST(request: Request) {
-  const host = request.headers.get("host");
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
   const { image, roomType, designType, additionalReq, userEmail } =
     await request.json();
   //convert image to AI image
