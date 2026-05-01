@@ -1,14 +1,18 @@
 import { db } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
 import { convertImageUrlToBase64 } from "@/lib/utils";
-import { useUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 import Replicate from "replicate";
 const replicate = new Replicate({
   auth: process.env.NEXT_PUBLIC_REPLICATE_API_TOKEN!,
 });
 
 export async function POST(request: Request) {
+  const host = request.headers.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+
+  const baseUrl = `${protocol}://${host}`;
   const { image, roomType, designType, additionalReq, userEmail } =
     await request.json();
   //convert image to AI image
@@ -22,7 +26,7 @@ export async function POST(request: Request) {
 
     const output = await replicate.run(
       "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
-      { input }
+      { input },
     );
 
     if (!output || typeof output !== "string") {
@@ -33,17 +37,14 @@ export async function POST(request: Request) {
     const formData = new FormData();
     formData.append("file", base64ImageUrl);
 
-    const uploadResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const uploadResponse = await fetch(`${baseUrl}/api/upload`, {
+      method: "POST",
+      body: formData,
+    });
     const uploadResult = await uploadResponse.json();
     const finalImageUrl = uploadResult.url;
 
-    const dbResult = await db
+    await db
       .insert(AiGeneratedImage)
       .values({
         roomType,
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
       {
         results: finalImageUrl,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (e) {
     console.log(e);
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
       {
         error: e,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
