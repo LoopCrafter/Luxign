@@ -22,11 +22,8 @@ jobs:
       - name: Build image
         run: |
           docker build \
-            --build-arg CLOUDINARY_CLOUD_NAME="${{ secrets.CLOUDINARY_CLOUD_NAME }}" \
-            --build-arg CLOUDINARY_API_KEY="${{ secrets.CLOUDINARY_API_KEY }}" \
-            --build-arg CLOUDINARY_API_SECRET="${{ secrets.CLOUDINARY_API_SECRET }}" \
             --build-arg NEXT_PUBLIC_REPLICATE_API_TOKEN="${{ secrets.NEXT_PUBLIC_REPLICATE_API_TOKEN }}" \
-            --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+            --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" \
             -t ${{ secrets.DOCKER_USER }}/luxign:latest .
 
       - name: Push image
