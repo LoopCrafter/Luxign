@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
-        }
+        },
       );
       stream.end(buffer);
     });
@@ -55,9 +55,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: signedUrl });
   } catch (error) {
+    console.log;
     return NextResponse.json(
       { error: (error as Error).message || "Upload failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

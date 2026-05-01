@@ -10,7 +10,7 @@ export const Users = pgTable("users", {
   lastVisitTime: timestamp({ mode: "date" }).defaultNow().notNull(),
 });
 
-export const AiGeneratedImage = pgTable("aiGeneratedImage", {
+export const AiGeneratedImage = pgTable("ai_generated_image", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   roomType: varchar("roomType").notNull(),
   designType: varchar("designType").notNull(),
