@@ -9,6 +9,7 @@ const replicate = new Replicate({
 
 export async function POST(request: Request) {
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+  console.log("HMED", baseUrl);
   const { image, roomType, designType, additionalReq, userEmail } =
     await request.json();
   //convert image to AI image
@@ -37,6 +38,8 @@ export async function POST(request: Request) {
       method: "POST",
       body: formData,
     });
+    const text = await uploadResponse.text();
+    console.log("UPLOAD RESPONSE:", text);
     const uploadResult = await uploadResponse.json();
     const finalImageUrl = uploadResult.url;
 
