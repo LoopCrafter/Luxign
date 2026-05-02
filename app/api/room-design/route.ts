@@ -1,6 +1,6 @@
 import { getDb } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
-import { convertImageUrlToBase64 } from "@/lib/utils";
+import { uploadFromUrl } from "@/lib/utils";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 const replicate = new Replicate({
@@ -30,18 +30,9 @@ export async function POST(request: Request) {
       throw new Error("Output is not a valid image URL,Try again later");
     }
 
-    const base64ImageUrl = await convertImageUrlToBase64(output);
-    const formData = new FormData();
-    formData.append("file", base64ImageUrl);
+    const uploadResult = await uploadFromUrl(output);
 
-    const uploadResponse = await fetch(`${baseUrl}/api/upload`, {
-      method: "POST",
-      body: formData,
-    });
-    const text = await uploadResponse.text();
-    console.log("UPLOAD RESPONSE:", text);
-    const uploadResult = await uploadResponse.json();
-    const finalImageUrl = uploadResult.url;
+    const finalImageUrl = uploadResult.secure_url;
 
     await getDb()
       .insert(AiGeneratedImage)
