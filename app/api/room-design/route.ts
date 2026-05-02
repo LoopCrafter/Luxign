@@ -1,11 +1,27 @@
 import { getDb } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
-import { uploadFromUrl } from "@/lib/utils";
+import cloudinary from "@/lib/cloudinary.server";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 const replicate = new Replicate({
   auth: process.env.NEXT_PUBLIC_REPLICATE_API_TOKEN!,
 });
+
+async function uploadFromUrl(imageUrl: string) {
+  const res = await fetch(imageUrl);
+  const buffer = Buffer.from(await res.arrayBuffer());
+
+  return new Promise<{ secure_url: string }>((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "room-design" },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result as any);
+      },
+    );
+    stream.end(buffer);
+  });
+}
 
 export async function POST(request: Request) {
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
