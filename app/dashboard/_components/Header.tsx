@@ -2,13 +2,15 @@
 import TransitionLink from "@/components/ui/TransitionLink";
 import { Button } from "@/components/ui/button";
 import { useUserDetail } from "@/hooks";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
   const { userDetail } = useUserDetail();
-
+  const { user } = useUser();
+  console.log("hamed user", { userDetail, user });
+  console.log("hamed env", process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
   return (
     <div className="p-5 shadow-sm flex justify-between items-center">
       <TransitionLink href="/dashboard">
@@ -22,13 +24,15 @@ const Header = () => {
           Buy More Credits
         </Button>
       </Link>
-      <div className="flex items-center gap-4">
-        <div className="flex gap-2 p-1 px-3 items-center bg-slate-200 rounded-full">
-          <Image src="/star.png" alt="star" width={20} height={20} />
-          <h2>{userDetail?.credit}</h2>
+      {user ? (
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2 p-1 px-3 items-center bg-slate-200 rounded-full">
+            <Image src="/star.png" alt="star" width={20} height={20} />
+            <h2>{userDetail?.credit}</h2>
+          </div>
+          <UserButton />
         </div>
-        <UserButton />
-      </div>
+      ) : null}
     </div>
   );
 };
