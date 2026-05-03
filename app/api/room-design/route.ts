@@ -1,8 +1,11 @@
+import { Users, AiGeneratedImage } from "@/db/schema";
 import { getDb } from "@/db";
-import { AiGeneratedImage } from "@/db/schema";
-import cloudinary from "@/lib/cloudinary.server";
+import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import cloudinary from "@/lib/cloudinary.server";
 import Replicate from "replicate";
+
 const replicate = new Replicate({
   auth: process.env.NEXT_PUBLIC_REPLICATE_API_TOKEN!,
 });
@@ -24,14 +27,45 @@ async function uploadFromUrl(imageUrl: string) {
 }
 
 export async function POST(request: Request) {
-  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+  const { userId } = await auth();
+
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+
   const { image, roomType, designType, additionalReq, userEmail } =
     await request.json();
-  //convert image to AI image
+
+  const db = getDb();
   try {
+    const updatedUser = await db
+      .update(Users)
+      .set({
+        credit: sql`${Users.credit} - 1`,
+      })
+      .where(
+        sql`${Users.email} = ${user.emailAddresses} AND ${Users.credit} > 0`,
+      )
+      .returning({
+        id: Users.id,
+        credit: Users.credit,
+      });
+
+    // ❌ no credit available
+    if (!updatedUser.length) {
+      return NextResponse.json(
+        { message: "No credits left" },
+        { status: 403, statusText: "No credits left" },
+      );
+    }
+
+    // 🔥 STEP 2: AI generation
     const input = {
       image,
-      prompt: `A realistic ${designType} style ${roomType} interior, high-resolution, wide-angle view, soft natural lighting, detailed furniture and decoration, photorealistic${
+      prompt: `A realistic ${designType} style ${roomType} interior, high-resolution, wide-angle view, soft natural lighting${
         additionalReq ? `, ${additionalReq}` : ""
       }`,
     };
@@ -42,35 +76,27 @@ export async function POST(request: Request) {
     );
 
     if (!output || typeof output !== "string") {
-      throw new Error("Output is not a valid image URL,Try again later");
+      throw new Error("AI generation failed");
     }
 
     const uploadResult = await uploadFromUrl(output);
-
     const finalImageUrl = uploadResult.secure_url;
 
-    await getDb()
-      .insert(AiGeneratedImage)
-      .values({
-        roomType,
-        designType,
-        originalImage: image,
-        aiImage: finalImageUrl,
-        userEmail,
-      })
-      .returning({ id: AiGeneratedImage.id });
-    return NextResponse.json(
-      {
-        results: finalImageUrl,
-      },
-      { status: 200 },
-    );
+    // 🔥 STEP 3: save image
+    await db.insert(AiGeneratedImage).values({
+      roomType,
+      designType,
+      originalImage: image,
+      aiImage: finalImageUrl,
+      userEmail,
+    });
+
+    return NextResponse.json({ results: finalImageUrl }, { status: 200 });
   } catch (e) {
     console.log(e);
+
     return NextResponse.json(
-      {
-        error: e,
-      },
+      { error: "Internal Server Error" },
       { status: 500 },
     );
   }

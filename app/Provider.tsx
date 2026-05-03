@@ -15,12 +15,14 @@ const Provider: FC<Props> = ({ children }) => {
     user && verifyUser();
   }, [user]);
   const verifyUser = async () => {
-    const results = await fetch("/api/verify-user", {
-      method: "POST",
-      body: JSON.stringify(user),
-    });
-    const data = await results.json();
-    setUserDetail(data.result);
+    try {
+      const results = await fetch("/api/verify-user", {
+        method: "POST",
+        body: JSON.stringify(user),
+      });
+      const data = await results.json();
+      setUserDetail(data.result);
+    } catch (err) {}
   };
 
   return (

@@ -44,6 +44,7 @@ const BuyCreditPage = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-10">
         {creditPlanes.map((plan) => (
           <div
+            key={plan.id}
             className={`flex flex-col gap-2 justify-center items-center border shadow-md rounded-lg p-5 ${
               selectedPlan?.id === plan.id ? "border-primary" : ""
             }`}

@@ -9,6 +9,7 @@ import { z } from "zod";
 import { useUser } from "@clerk/nextjs";
 import CustomLoading from "./_components/CustomLoading";
 import AiOutputDialog from "../_components/AiOutputDialog";
+import { toast } from "sonner";
 
 const FormSchema = z.object({
   image: z.instanceof(File, { message: "Please upload an image" }),
@@ -70,13 +71,27 @@ const CreateNewDesignPage = () => {
           userEmail: user?.primaryEmailAddress?.emailAddress,
         }),
       });
+      const text = await res.json();
+
+      if (!res.ok) {
+        throw new Error(
+          res.statusText || "Request failed, Please try again later",
+        );
+      }
       const data = await res.json();
       setAiImageOutputUrl(data.results);
       setOriginalImageUrl(url);
+      setShowAiOutputDialog(true);
     } catch (e) {
+      if (e instanceof Error) {
+        toast.error(e.message, { position: "top-center" });
+      } else {
+        toast.error("Something wrong. please try again later!", {
+          position: "top-center",
+        });
+      }
     } finally {
       setLoading(false);
-      setShowAiOutputDialog(true);
     }
   };
 
@@ -137,12 +152,14 @@ const CreateNewDesignPage = () => {
         </div>
       </div>
       <CustomLoading loading={loading} />
-      <AiOutputDialog
-        openDialog={showAiOutputDialog}
-        setCloseDialog={() => setShowAiOutputDialog(false)}
-        originalImage={originalImageUrl}
-        aiGeneratedImage={aiImageOutputUrl}
-      />
+      {showAiOutputDialog ? (
+        <AiOutputDialog
+          openDialog={showAiOutputDialog}
+          setCloseDialog={() => setShowAiOutputDialog(false)}
+          originalImage={originalImageUrl}
+          aiGeneratedImage={aiImageOutputUrl}
+        />
+      ) : null}
     </div>
   );
 };

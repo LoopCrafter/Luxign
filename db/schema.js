@@ -8,6 +8,7 @@ export const Users = pgTable("users", {
   credit: integer().default(3),
   createdAt: timestamp({ mode: "date" }).defaultNow().notNull(),
   lastVisitTime: timestamp({ mode: "date" }).defaultNow().notNull(),
+  userId: varchar({ length: 255 }).notNull(),
 });
 
 export const AiGeneratedImage = pgTable("ai_generated_image", {
