@@ -33,7 +33,7 @@ type Plan = (typeof creditPlanes)[number];
 const BuyCreditPage = () => {
   const [selectedPlan, setSelectedPlan] = useState<null | Plan>(null);
   return (
-    <div>
+    <div className="p-6">
       <div>
         <h2 className="font-bold text-2xl">Buy More Credits</h2>
         <p>

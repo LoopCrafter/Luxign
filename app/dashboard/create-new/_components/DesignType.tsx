@@ -60,9 +60,9 @@ const DesignType: FC<Props> = ({ selectDesignType, error }) => {
               <Image
                 src={design.image}
                 alt={design.title}
-                width={100}
-                height={100}
-                className={`h-[70px] rounded-md hover:scale-105 transition-all cursor-pointer false ${
+                width={200}
+                height={200}
+                className={`h-[100px] md:h-[70px] w-full rounded-md hover:scale-105 transition-all cursor-pointer false ${
                   selectedDesignType === design.title
                     ? " border-2 border-primary rounded-md p-1"
                     : ""

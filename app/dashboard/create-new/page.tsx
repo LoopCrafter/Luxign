@@ -99,7 +99,7 @@ const CreateNewDesignPage = () => {
   };
 
   return (
-    <div>
+    <div className="p-6">
       <h2 className="font-bold text-4xl text-primary text-center">
         Experience the Magic of AI Remodeling
       </h2>
