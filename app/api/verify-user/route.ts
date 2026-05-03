@@ -17,7 +17,6 @@ export async function POST(req: Request) {
       .from(Users)
       .where(eq(Users.email, email));
     // If user does NOT exist in DB
-    console.log("hamed", email);
     if (userInfo.length === 0) {
       const saveResult = await db
         .insert(Users)

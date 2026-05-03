@@ -46,9 +46,7 @@ export async function POST(request: Request) {
       .set({
         credit: sql`${Users.credit} - 1`,
       })
-      .where(
-        sql`${Users.email} = ${user.emailAddresses} AND ${Users.credit} > 0`,
-      )
+      .where(sql`${Users.userId} = ${user.id} AND ${Users.credit} > 0`)
       .returning({
         id: Users.id,
         credit: Users.credit,
@@ -65,9 +63,15 @@ export async function POST(request: Request) {
     // 🔥 STEP 2: AI generation
     const input = {
       image,
-      prompt: `A realistic ${designType} style ${roomType} interior, high-resolution, wide-angle view, soft natural lighting${
-        additionalReq ? `, ${additionalReq}` : ""
-      }`,
+      prompt: `
+        Highly detailed, photorealistic ${designType} interior design of a ${roomType}.
+        Wide-angle architectural photography, 24mm lens, ultra realistic rendering, global illumination, soft natural daylight coming from large windows.
+        Interior styling with premium materials, attention to textures (wood, stone, fabric, metal), depth and spatial balance.
+
+        ${additionalReq ? `${additionalReq},` : ""}
+
+        Cinematic composition, clean minimal aesthetic, professional interior design magazine quality, ultra high resolution, sharp focus, depth of field, natural shadows, perfectly balanced color grading.
+          `.trim(),
     };
 
     const output = await replicate.run(

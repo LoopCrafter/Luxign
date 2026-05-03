@@ -10,6 +10,8 @@ import { useUser } from "@clerk/nextjs";
 import CustomLoading from "./_components/CustomLoading";
 import AiOutputDialog from "../_components/AiOutputDialog";
 import { toast } from "sonner";
+import { useUserDetail } from "@/hooks";
+import { CreditLimitAlertDialog } from "./_components/CreditLimitAlertDialog";
 
 const FormSchema = z.object({
   image: z.instanceof(File, { message: "Please upload an image" }),
@@ -25,7 +27,9 @@ const CreateNewDesignPage = () => {
   const [loading, setLoading] = useState(false);
   const [aiImageOutputUrl, setAiImageOutputUrl] = useState("");
   const [originalImageUrl, setOriginalImageUrl] = useState("");
+  const [showCreditLimitDialog, setShowCreditLimitDialog] = useState(false);
   const [showAiOutputDialog, setShowAiOutputDialog] = useState(false);
+  const { setUserDetail, userDetail } = useUserDetail();
   const [formData, setFormData] = useState<{
     image: File | null;
     roomType: string;
@@ -47,6 +51,10 @@ const CreateNewDesignPage = () => {
   };
 
   const validateForm = async () => {
+    if (userDetail?.credit === 0) {
+      setShowCreditLimitDialog(true);
+      return;
+    }
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const zodErrors: typeof formErrors = {};
@@ -71,7 +79,6 @@ const CreateNewDesignPage = () => {
           userEmail: user?.primaryEmailAddress?.emailAddress,
         }),
       });
-      const text = await res.json();
 
       if (!res.ok) {
         throw new Error(
@@ -82,6 +89,9 @@ const CreateNewDesignPage = () => {
       setAiImageOutputUrl(data.results);
       setOriginalImageUrl(url);
       setShowAiOutputDialog(true);
+      setUserDetail((prev) =>
+        prev ? { ...prev, credit: (userDetail?.credit ?? 1) - 1 } : null,
+      );
     } catch (e) {
       if (e instanceof Error) {
         toast.error(e.message, { position: "top-center" });
@@ -90,6 +100,7 @@ const CreateNewDesignPage = () => {
           position: "top-center",
         });
       }
+      console.log(e);
     } finally {
       setLoading(false);
     }
@@ -160,6 +171,10 @@ const CreateNewDesignPage = () => {
           aiGeneratedImage={aiImageOutputUrl}
         />
       ) : null}
+      <CreditLimitAlertDialog
+        open={showCreditLimitDialog}
+        onOpenChange={setShowCreditLimitDialog}
+      />
     </div>
   );
 };
