@@ -1,6 +1,12 @@
 "use client";
 import { useState } from "react";
 
+export async function generateMetadata() {
+  return {
+    title: "Buy Credit | Luxign",
+  };
+}
+
 const creditPlanes = [
   {
     id: 1,

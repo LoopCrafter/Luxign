@@ -20,6 +20,12 @@ const FormSchema = z.object({
   additionalReq: z.string().optional(),
 });
 
+export async function generateMetadata() {
+  return {
+    title: "Create New Design | Luxign",
+  };
+}
+
 type FormSchema = z.infer<typeof FormSchema>;
 
 const CreateNewDesignPage = () => {

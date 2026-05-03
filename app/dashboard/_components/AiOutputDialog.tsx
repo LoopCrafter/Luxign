@@ -18,7 +18,7 @@ const AiOutputDialog: FC<Props> = ({
   setCloseDialog,
 }) => {
   return openDialog ? (
-    <div className="fixed inset-0 w-full h-full bg-black/60 backdrop-blur-xs flex items-center justify-center p-2 lg:p-10">
+    <div className="fixed inset-0 w-full h-full bg-black/60 backdrop-blur-xs flex items-center justify-center p-2 lg:p-10 z-50">
       <div className="w-full md:w-2/3 xl:w-1/2 h-2/3 md:h-full bg-white flex flex-col gap-6 items-center justify-between p-5 rounded-md">
         <div className="w-full">
           <h2 className="text-xl font-semibold">Result:</h2>

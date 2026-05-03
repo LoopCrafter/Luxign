@@ -10,11 +10,16 @@ const Header = () => {
   const { userDetail } = useUserDetail();
   const { user } = useUser();
   return (
-    <div className="p-5 shadow-sm flex justify-between items-center">
+    <div className="p-5 shadow-sm flex justify-between items-center sticky top-0 bg-white z-20">
       <TransitionLink href="/dashboard">
         <button className="flex items-center gap-2">
-          <Image src="/logo.svg" alt="Logo" width={40} height={40} />
-          <h2 className="font-bold text-lg">Luxign</h2>
+          <Image
+            src="/images/logo.svg"
+            alt="Logo"
+            width={100}
+            height={50}
+            className="object-cover h-[40px]"
+          />
         </button>
       </TransitionLink>
       <Link href="/dashboard/buy-credit">
