@@ -25,3 +25,19 @@ export async function convertImageUrlToBase64(
     throw error;
   }
 }
+
+export const downloadImage = async (url: string, filename = "image.jpg") => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+
+  const blobUrl = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  window.URL.revokeObjectURL(blobUrl);
+};

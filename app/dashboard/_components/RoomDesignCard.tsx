@@ -2,8 +2,6 @@ import { Button } from "@/components/ui/button";
 import { RoomType } from "@/types";
 import Image from "next/image";
 import { FC } from "react";
-import ReactBeforeSliderComponent from "react-before-after-slider-component";
-import "react-before-after-slider-component/dist/build.css";
 type Props = RoomType & {
   handleClickCard: () => void;
 };
