@@ -55,7 +55,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: signedUrl });
   } catch (error) {
-    console.log;
     return NextResponse.json(
       { error: (error as Error).message || "Upload failed" },
       { status: 500 },

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { Suspense } from "react";
 import History from "./_components/History";
+import Loading from "./_components/Loading";
 
 const DashboardPage = () => {
   return (
     <div>
-      <History />
+      <Suspense fallback={<Loading />}>
+        <History />
+      </Suspense>
     </div>
   );
 };

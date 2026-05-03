@@ -9,8 +9,6 @@ import Link from "next/link";
 const Header = () => {
   const { userDetail } = useUserDetail();
   const { user } = useUser();
-  console.log("hamed user", { userDetail, user });
-  console.log("hamed env", process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
   return (
     <div className="p-5 shadow-sm flex justify-between items-center">
       <TransitionLink href="/dashboard">

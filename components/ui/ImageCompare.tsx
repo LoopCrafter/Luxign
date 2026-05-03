@@ -56,7 +56,7 @@ export const ImageCompare: React.FC<ImageCompareProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full  h-full overflow-hidden rounded-2xl select-none ${className}`}
+      className={`relative w-full h-full overflow-hidden rounded-2xl select-none ${className}`}
     >
       {/* BEFORE (full) */}
       <Image
