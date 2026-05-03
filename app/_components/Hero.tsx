@@ -1,6 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Section } from "./Section";
 import Image from "next/image";
+import { ArrowLeftRight } from "lucide-react";
+import Link from "next/link";
 
 export const Hero = () => (
   <Section
@@ -19,12 +21,12 @@ export const Hero = () => (
         interior designs with architectural precision.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Button
-          size="lg"
-          className="rounded-full bg-primary px-6 text-primary-foreground shadow-soft hover:bg-primary/90"
+        <Link
+          href="/dashboard"
+          className={`${buttonVariants({ size: "lg" })} rounded-full bg-primary px-6 text-primary-foreground shadow-soft hover:bg-primary/90`}
         >
           Start Designing
-        </Button>
+        </Link>
         <Button
           size="lg"
           variant="outline"
@@ -37,16 +39,23 @@ export const Hero = () => (
 
     <div className="mt-14 sm:mt-16">
       <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl shadow-card ring-1 ring-border/60">
-        <div className="relative aspect-[16/9] w-full">
+        <div className="relative aspect-[16/9] w-full flex items-center">
           <Image
-            src="/images/hero-preview.jpg"
+            src="/images/before.png"
             alt="Before and after interior design preview"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="h-full w-1/2 object-cover select-none"
+            width={1600}
+            height={900}
+          />
+          <Image
+            src="/images/after.png"
+            alt="Before and after interior design preview"
+            className="h-full w-1/2 object-cover select-none"
             width={1600}
             height={900}
           />
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/95 px-3 py-1.5 text-xs font-medium shadow-soft">
-            ‹ ›
+            <ArrowLeftRight className="size-4" />
           </div>
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-primary/95 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-primary-foreground">
             Rendering Reality...

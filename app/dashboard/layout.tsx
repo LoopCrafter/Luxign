@@ -1,5 +1,4 @@
 import { FC, ReactNode } from "react";
-import Header from "./_components/Header";
 import { Toaster } from "@/components/ui/sonner";
 
 type Dashboard = {

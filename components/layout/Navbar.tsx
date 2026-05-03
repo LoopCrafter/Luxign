@@ -21,7 +21,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur">
       <Container className="flex h-16 items-center justify-between">
-        <TransitionLink href="/dashboard">
+        <TransitionLink href="/">
           <button className="flex items-center gap-2">
             <Image
               src="/images/logo.svg"
