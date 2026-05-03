@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Provider from "./Provider";
 import Navbar from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -64,7 +65,8 @@ export default function RootLayout({
         <body className={outfit.className}>
           <Provider>
             <Navbar />
-            {children}
+            <main>{children}</main>
+            <Footer />
           </Provider>
         </body>
       </html>
