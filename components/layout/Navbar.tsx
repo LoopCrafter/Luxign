@@ -6,6 +6,7 @@ import TransitionLink from "../ui/TransitionLink";
 import Image from "next/image";
 import { useUserDetail } from "@/hooks";
 import { UserButton, useUser } from "@clerk/nextjs";
+import { CirclePoundSterling } from "lucide-react";
 
 const links = [
   { label: "Features", href: "#features" },
@@ -45,9 +46,11 @@ const Navbar = () => {
 
         {user ? (
           <div className="flex items-center gap-4">
-            <div className="flex gap-2 p-1 px-3 items-center bg-slate-200 rounded-full">
-              <Image src="/star.png" alt="star" width={20} height={20} />
-              <h2>{userDetail?.credit}</h2>
+            <div className="flex gap-2 p-1 px-3 items-center bg-slate-100 rounded-xl">
+              <h2 className="flex items-center justify-center gap-2 text-sm">
+                <CirclePoundSterling className="size-4" />
+                {userDetail?.credit} Credits
+              </h2>
             </div>
             <UserButton />
           </div>
