@@ -119,6 +119,10 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .bg-gradient-hero {
+    background-image: linear-gradient(180deg, #fff, #f6f0fe);
+  }
 }
 
 .loader {

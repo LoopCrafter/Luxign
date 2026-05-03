@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Provider from "./Provider";
+import Navbar from "@/components/layout/Navbar";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -61,7 +62,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={outfit.className}>
-          <Provider>{children}</Provider>
+          <Provider>
+            <Navbar />
+            {children}
+          </Provider>
         </body>
       </html>
     </ClerkProvider>

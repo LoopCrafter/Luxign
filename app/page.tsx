@@ -1,8 +1,15 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { redirect } from "next/navigation";
+import { Hero } from "./_components/Hero";
+import { HowItWorks } from "./_components/HowItWorks";
+import { Features } from "./_components/Features";
+import { CuratedStyles } from "./_components/CuratedStyles";
 
 export default function Home() {
-  redirect("/dashboard");
-  return <div className=""></div>;
+  return (
+    <div className="">
+      <Hero />
+      <HowItWorks />
+      <Features />
+      <CuratedStyles />
+    </div>
+  );
 }
