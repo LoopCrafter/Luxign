@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useRef, useState, DragEvent } from "react";
 
 type Props = {
   handleSelectedImage: (file: File) => void;
@@ -8,41 +8,88 @@ type Props = {
 };
 
 const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
-  const [selectedImageFile, setSelectedImageFile] = useState<File | null>();
-  const onFileSelected = (event: ChangeEvent<HTMLInputElement>) => {
-    const input = event.target;
-    const files = input.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      setSelectedImageFile(file);
-      handleSelectedImage(file);
-    }
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFile = (file: File) => {
+    setSelectedImageFile(file);
+    handleSelectedImage(file);
   };
+
+  const onFileSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) handleFile(file);
+  };
+
+  const onDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFile(file);
+  };
+
   return (
     <div>
-      <label>Select Image of your room</label>
-      <div className="mt-3">
-        <label htmlFor="upload-image">
-          <div
-            className={`border rounded-xl 
-                border-dotted flex justify-center border-primary
-                 bg-slate-200 cursor-pointer hover:shadow-lg
-                  ${selectedImageFile ? "p-2 bg-white" : "p-28"}`}
-          >
-            {!selectedImageFile ? (
-              <Image src="/upload.png" width={70} height={30} alt="Upload" />
-            ) : (
-              <Image
-                src={URL.createObjectURL(selectedImageFile)}
-                alt=""
-                width={300}
-                height={300}
-                className="w-full max-h-[300px] object-contain"
-              />
-            )}
+      <label className="block mb-2 font-medium">
+        Select Image of your room
+      </label>
+
+      <div
+        onClick={() => inputRef.current?.click()}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+        }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={onDrop}
+        className={`
+          mt-3 rounded-xl border-2 border-dashed cursor-pointer
+          transition-all flex items-center justify-center
+          text-center relative overflow-hidden
+          ${selectedImageFile ? "p-2 bg-white" : "p-20"}
+          ${
+            isDragging
+              ? "border-blue-500 bg-blue-50"
+              : "border-gray-300 bg-slate-50 hover:border-gray-400"
+          }
+        `}
+      >
+        {!selectedImageFile ? (
+          <div className="flex flex-col items-center gap-2 text-gray-500">
+            <Image src="/upload.png" width={60} height={60} alt="upload" />
+            <p className="text-sm">
+              Drag & drop your image here, or click to browse
+            </p>
+            <span className="text-xs text-gray-400">
+              Supports JPG, PNG, WEBP
+            </span>
           </div>
-        </label>
+        ) : (
+          <div className="relative w-full">
+            <Image
+              src={URL.createObjectURL(selectedImageFile)}
+              alt=""
+              width={500}
+              height={500}
+              className="w-full max-h-[320px] object-contain rounded-lg"
+            />
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImageFile(null);
+              }}
+              className="absolute top-2 right-2 bg-black/60 text-white px-2 py-1 rounded-md text-xs"
+            >
+              Remove
+            </button>
+          </div>
+        )}
+
         <input
+          ref={inputRef}
           accept="image/*"
           id="upload-image"
           type="file"
@@ -50,6 +97,7 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
           onChange={onFileSelected}
         />
       </div>
+
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
