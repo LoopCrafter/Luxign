@@ -4,6 +4,7 @@ import TransitionLink from "../ui/TransitionLink";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { UserDropdown } from "../features/UserDropdown";
+import Link from "next/link";
 
 const links = [
   { label: "Features", href: "#features" },
@@ -30,13 +31,13 @@ const Navbar = () => {
         </TransitionLink>
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {links.map((l) => (
-            <a
+            <Link
               key={l.href}
-              href={l.href}
+              href={`/${l.href}`}
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
