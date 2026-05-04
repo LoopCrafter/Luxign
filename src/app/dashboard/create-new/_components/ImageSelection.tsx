@@ -58,7 +58,12 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
       >
         {!selectedImageFile ? (
           <div className="flex flex-col items-center gap-2 text-gray-500">
-            <Image src="/upload.png" width={60} height={60} alt="upload" />
+            <Image
+              src="/images/upload.png"
+              width={60}
+              height={60}
+              alt="upload"
+            />
             <p className="text-sm">
               Drag & drop your image here, or click to browse
             </p>
