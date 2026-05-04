@@ -1,7 +1,7 @@
 import { getDb } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -25,7 +25,8 @@ export async function GET() {
   const result = await getDb()
     .select()
     .from(AiGeneratedImage)
-    .where(eq(AiGeneratedImage.userEmail, userEmail));
+    .where(eq(AiGeneratedImage.userEmail, userEmail))
+    .orderBy(desc(AiGeneratedImage.id));
 
   return NextResponse.json({ result }, { status: 200 });
 }
