@@ -6,32 +6,62 @@ const designs = [
   {
     id: 1,
     title: "Modern",
-    image: "/modern.png",
+    image: "/images/design-types/modern.jpg",
   },
   {
     id: 2,
-    title: "Industrial",
-    image: "/industrial.png",
+    title: "Minimalist",
+    image: "/images/design-types/minimalist.jpg",
   },
   {
     id: 3,
-    title: "Bohemian",
-    image: "/bohemian.png",
+    title: "Scandinavian",
+    image: "/images/design-types/scandinavian.jpg",
   },
   {
     id: 4,
-    title: "Traditional",
-    image: "/traditional.png",
+    title: "Industrial",
+    image: "/images/design-types/industrial.jpg",
   },
   {
     id: 5,
-    title: "Rustic",
-    image: "/rustic.png",
+    title: "Bohemian",
+    image: "/images/design-types/bohemian.jpg",
   },
   {
     id: 6,
-    title: "Minimalist",
-    image: "/minimalist.png",
+    title: "Traditional",
+    image: "/images/design-types/traditional.jpg",
+  },
+  {
+    id: 7,
+    title: "Rustic",
+    image: "/images/design-types/rustic.jpg",
+  },
+  {
+    id: 8,
+    title: "Contemporary",
+    image: "/images/design-types/contemporary.jpg",
+  },
+  {
+    id: 9,
+    title: "Japandi",
+    image: "/images/design-types/japandi.jpg",
+  },
+  {
+    id: 10,
+    title: "Luxury",
+    image: "/images/design-types/luxury.jpg",
+  },
+  {
+    id: 11,
+    title: "Mid-Century Modern",
+    image: "/images/design-types/midcentury.jpg",
+  },
+  {
+    id: 12,
+    title: "Coastal",
+    image: "/images/design-types/coastal.jpg",
   },
 ];
 
@@ -62,14 +92,14 @@ const DesignType: FC<Props> = ({ selectDesignType, error }) => {
                 alt={design.title}
                 width={200}
                 height={200}
-                className={`h-[100px] md:h-[70px] w-full rounded-md hover:scale-105 transition-all cursor-pointer false ${
+                className={`h-[100px] md:h-[90px] w-full rounded-md hover:scale-105 transition-all cursor-pointer false ${
                   selectedDesignType === design.title
                     ? " border-2 border-primary rounded-md p-1"
                     : ""
                 }`}
                 loading="lazy"
               />
-              <h2>{design.title}</h2>
+              <h2 className="text-gray-600 text-md">{design.title}</h2>
             </div>
           );
         })}

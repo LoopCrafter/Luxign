@@ -75,6 +75,12 @@ export function UserDropdown() {
             >
               💳 Buy Credit
             </Link>
+            <Link
+              href="/dashboard"
+              className="block px-3 py-2 text-sm hover:bg-gray-100 rounded-lg"
+            >
+              🕒 History
+            </Link>
 
             <Link
               href="/profile"
