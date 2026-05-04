@@ -167,3 +167,7 @@
 button {
   cursor: pointer;
 }
+
+.profile-sidebar > div:last-child {
+  display: none !important;
+}

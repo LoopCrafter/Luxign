@@ -68,7 +68,7 @@ export const Features = () => (
                   : "bg-primary/10 text-primary",
               )}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="size-5" />
             </div>
             <h3 className="mt-5 text-lg font-semibold">{title}</h3>
             <p
