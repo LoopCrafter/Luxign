@@ -64,9 +64,11 @@ export default function RootLayout({
       <html lang="en">
         <body className={outfit.className}>
           <Provider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
+            <div className="flex flex-col gap-2 min-h-screen">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
           </Provider>
         </body>
       </html>
