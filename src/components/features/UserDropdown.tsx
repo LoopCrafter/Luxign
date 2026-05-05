@@ -71,22 +71,31 @@ export function UserDropdown() {
           <div className="py-2 space-y-1">
             <Link
               href="/dashboard/buy-credit"
-              className="block px-3 py-2 text-sm hover:bg-gray-100 rounded-lg"
+              className="px-3 py-2 text-sm hover:bg-gray-100 rounded-lg flex items-center gap-2 group"
             >
-              💳 Buy Credit
+              <span className="opacity-60 group-hover:opacity-100 transition-all duration-200">
+                💳
+              </span>
+              <span className="">Buy Credit</span>
             </Link>
             <Link
               href="/dashboard"
-              className="block px-3 py-2 text-sm hover:bg-gray-100 rounded-lg"
+              className="px-3 py-2 text-sm hover:bg-gray-100 rounded-lg flex items-center gap-2 group"
             >
-              🕒 History
+              <span className="opacity-60 group-hover:opacity-100 transition-all duration-200">
+                🕒
+              </span>
+              <span className="">History</span>
             </Link>
 
             <Link
               href="/profile"
-              className="block px-3 py-2 text-sm hover:bg-gray-100 rounded-lg"
+              className="px-3 py-2 text-sm hover:bg-gray-100 rounded-lg flex items-center gap-2 group"
             >
-              ⚙️ Settings
+              <span className="opacity-60 group-hover:opacity-100 transition-all duration-200">
+                ⚙️
+              </span>
+              <span className="">Settings</span>
             </Link>
           </div>
 
@@ -94,9 +103,10 @@ export function UserDropdown() {
           <div className="border-t pt-2">
             <button
               onClick={() => signOut()}
-              className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+              className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 group"
             >
-              🚪 Logout
+              <span className="opacity-60 group-hover:opacity-100">🚪</span>
+              <span className="">Logout</span>
             </button>
           </div>
         </div>
