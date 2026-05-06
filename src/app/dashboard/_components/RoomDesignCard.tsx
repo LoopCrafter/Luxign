@@ -11,6 +11,7 @@ const RoomDesignCard: FC<Props> = ({
   designType,
   originalImage,
   aiImage,
+  blurDataUrl,
   handleClickCard,
 }) => {
   return (
@@ -23,8 +24,9 @@ const RoomDesignCard: FC<Props> = ({
         <Image
           src={aiImage}
           alt={designType}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
+          blurDataURL={blurDataUrl}
+          width={600}
+          height={600}
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
 
