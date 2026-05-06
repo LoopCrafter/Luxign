@@ -9,7 +9,7 @@ type Prop = {
 const AdditionalReq: FC<Prop> = ({ additionalRequirementInput }) => {
   return (
     <div className="mt-5">
-      <label className="text-gray-400">
+      <label className="text-slate-400 mb-2 block">
         Enter Additional Requirements (Optional)
       </label>
       <Textarea onChange={(e) => additionalRequirementInput(e.target.value)} />

@@ -37,7 +37,7 @@ type Props = {
 const RoomTypes: FC<Props> = ({ selectedRoomType, error }) => {
   return (
     <div>
-      <label className="text-slate-400">Select Room Type *</label>
+      <label className="text-slate-400 mb-2 block">Select Room Type *</label>
       <Select onValueChange={selectedRoomType}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Room Type" />

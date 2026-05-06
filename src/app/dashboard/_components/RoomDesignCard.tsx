@@ -15,39 +15,38 @@ const RoomDesignCard: FC<Props> = ({
 }) => {
   return (
     <div
-      className="rounded-lg border border-gray-300 shadow-md overflow-hidden p-4 bg-white cursor-pointer group"
       onClick={handleClickCard}
+      className="group w-full text-left rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
     >
-      {/* <ReactBeforeSliderComponent
-        firstImage={{ imageUrl: aiImage }}
-        secondImage={{ imageUrl: originalImage }}
-      /> */}
-      <figure className="w-full relative  overflow-hidden bg-black">
+      {/* Image Section */}
+      <div className="relative w-full h-[180px] overflow-hidden">
         <Image
           src={aiImage}
           alt={designType}
-          width={150}
-          height={100}
-          className="w-full h-auto max-h[100px] object-cover group-hover:opacity-50 transition-all duration-300 ease-in-out "
-          style={{ maxHeight: 200 }}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        <div className="absolute w-full h-full top-0 left-0 flex justify-center items-end">
-          <Button
-            variant="outline"
-            className="cursor-pointer px-10 relative -bottom-4 opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-4"
-          >
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+          <Button variant="secondary" className="pointer-events-none">
             Preview
           </Button>
         </div>
-      </figure>
-      <h2 className="mt-4 text-lg font-semibold flex items-center">
-        <span className="mr-2">🏠</span>
-        {roomType}
-      </h2>
-      <h2 className="text-md text-gray-700 flex items-center">
-        <span className="mr-2">🎨</span>
-        {designType}
-      </h2>
+      </div>
+
+      {/* Content */}
+      <div className="p-3">
+        <h2 className="text-lg font-semibold flex items-center">
+          <span className="mr-2">🏠</span>
+          {roomType}
+        </h2>
+        <h2 className="text-md text-gray-700 flex items-center">
+          <span className="mr-2">🎨</span>
+          {designType}
+        </h2>
+      </div>
     </div>
   );
 };

@@ -13,11 +13,19 @@ const RoomList = ({ userRoomList }: RoomList) => {
   const [showAiOutputDialog, setShowAiOutputDialog] = useState(false);
   const [aiImageOutputUrl, setAiImageOutputUrl] = useState("");
   const [originalImageUrl, setOriginalImageUrl] = useState("");
+  const [blurUrl, setBlurUrl] = useState("");
 
-  const handleClickCard = (originalImage: string, aiImage: string) => {
+  const handleClickCard = (
+    originalImage: string,
+    aiImage: string,
+    blurDataUrl = "",
+  ) => {
     setOriginalImageUrl(originalImage);
     setAiImageOutputUrl(aiImage);
     setShowAiOutputDialog(true);
+    if (blurDataUrl) {
+      setBlurUrl(blurDataUrl);
+    }
   };
 
   return (
@@ -28,7 +36,11 @@ const RoomList = ({ userRoomList }: RoomList) => {
             key={room.id}
             {...room}
             handleClickCard={() =>
-              handleClickCard(room.originalImage, room.aiImage)
+              handleClickCard(
+                room.originalImage,
+                room.aiImage,
+                room.blurDataUrl,
+              )
             }
           />
         ))}

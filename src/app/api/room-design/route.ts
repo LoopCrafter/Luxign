@@ -26,6 +26,12 @@ async function uploadFromUrl(imageUrl: string) {
   });
 }
 
+async function getBase64FromUrl(url: string) {
+  const res = await fetch(url);
+  const buffer = Buffer.from(await res.arrayBuffer());
+  return `data:image/jpeg;base64,${buffer.toString("base64")}`;
+}
+
 export async function POST(request: Request) {
   const { userId } = await auth();
 
@@ -73,7 +79,7 @@ export async function POST(request: Request) {
         Cinematic composition, clean minimal aesthetic, professional interior design magazine quality, ultra high resolution, sharp focus, depth of field, natural shadows, perfectly balanced color grading.
           `.trim(),
     };
-    console.log("Hamed Prompt: ", input.prompt);
+
     const output = await replicate.run(
       "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
       { input },
@@ -85,6 +91,12 @@ export async function POST(request: Request) {
 
     const uploadResult = await uploadFromUrl(output);
     const finalImageUrl = uploadResult.secure_url;
+    const blurUrl = finalImageUrl.replace(
+      "/upload/",
+      "/upload/w_40,h_40,c_fill,q_30,e_blur:1000/",
+    );
+
+    const blurBase64 = await getBase64FromUrl(blurUrl);
 
     // 🔥 STEP 3: save image
     await db.insert(AiGeneratedImage).values({
@@ -93,9 +105,13 @@ export async function POST(request: Request) {
       originalImage: image,
       aiImage: finalImageUrl,
       userEmail,
+      blurDataUrl: blurBase64,
     });
 
-    return NextResponse.json({ results: finalImageUrl }, { status: 200 });
+    return NextResponse.json(
+      { results: finalImageUrl, blurDataUrl: blurBase64 },
+      { status: 200 },
+    );
   } catch (e) {
     console.log(e);
 

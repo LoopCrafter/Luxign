@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useUserDetail } from "@/src/hooks";
 import { CreditLimitAlertDialog } from "./CreditLimitAlertDialog";
 import AiOutputDialog from "../../_components/AiOutputDialog";
+import { Container } from "@/src/components/layout/Container";
 
 const FormSchema = z.object({
   image: z.instanceof(File, { message: "Please upload an image" }),
@@ -28,6 +29,7 @@ const CreateNew = () => {
   const [aiImageOutputUrl, setAiImageOutputUrl] = useState("");
   const [originalImageUrl, setOriginalImageUrl] = useState("");
   const [showCreditLimitDialog, setShowCreditLimitDialog] = useState(false);
+  const [blurDataURL, setBlurDataURL] = useState("");
   const [showAiOutputDialog, setShowAiOutputDialog] = useState(false);
   const { setUserDetail, userDetail } = useUserDetail();
   const [formData, setFormData] = useState<{
@@ -88,6 +90,8 @@ const CreateNew = () => {
       const data = await res.json();
       setAiImageOutputUrl(data.results);
       setOriginalImageUrl(url);
+      console.log("hamed", data);
+      setBlurDataURL(data.results.blurDataUrl);
       setShowAiOutputDialog(true);
       setUserDetail((prev) =>
         prev ? { ...prev, credit: (userDetail?.credit ?? 1) - 1 } : null,
@@ -124,58 +128,73 @@ const CreateNew = () => {
     }
   };
 
+  const handleClosePreview = () => {
+    setShowAiOutputDialog(false);
+    setFormData({
+      image: null,
+      roomType: "",
+      designType: "",
+      additionalReq: "",
+    });
+  };
+
   return (
-    <div className="p-6">
-      <h2 className="font-bold text-4xl text-primary text-center">
-        Experience the Magic of AI Remodeling
-      </h2>
-      <p className="text-center text-gray-500">
-        Transform any room with a click. Select a space, choose a style, and
-        watch as AI instantly remains your environment.
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-6 justify-center mt-10">
-        <ImageSelection
-          handleSelectedImage={(value) => onHandleInputChange(value, "image")}
-          error={formErrors.image}
-        />
-        <div>
-          <RoomTypes
-            selectedRoomType={(value) => onHandleInputChange(value, "roomType")}
-            error={formErrors.roomType}
+    <Container>
+      <div className="p-6">
+        <h2 className="font-bold text-4xl text-primary text-center">
+          Experience the Magic of AI Remodeling
+        </h2>
+        <p className="text-center text-gray-500">
+          Transform any room with a click. Select a space, choose a style, and
+          watch as AI instantly remains your environment.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-6 justify-center mt-10">
+          <ImageSelection
+            handleSelectedImage={(value) => onHandleInputChange(value, "image")}
+            error={formErrors.image}
           />
-          <DesignType
-            selectDesignType={(value) =>
-              onHandleInputChange(value, "designType")
-            }
-            error={formErrors.designType}
-          />
-          <AdditionalReq
-            additionalRequirementInput={(value) =>
-              onHandleInputChange(value, "additionalReq")
-            }
-          />
-          <Button className="w-full mt-5" onClick={validateForm}>
-            Generate
-          </Button>
-          <p className="text-sm text-gray-400 mb-52">
-            NOTE: 1 Credit will use to redesign your room
-          </p>
+          <div>
+            <RoomTypes
+              selectedRoomType={(value) =>
+                onHandleInputChange(value, "roomType")
+              }
+              error={formErrors.roomType}
+            />
+            <DesignType
+              selectDesignType={(value) =>
+                onHandleInputChange(value, "designType")
+              }
+              error={formErrors.designType}
+            />
+            <AdditionalReq
+              additionalRequirementInput={(value) =>
+                onHandleInputChange(value, "additionalReq")
+              }
+            />
+            <Button className="w-full mt-5" onClick={validateForm}>
+              Generate
+            </Button>
+            <p className="text-sm text-slate-400 mt-2 blockmb-52">
+              NOTE: 1 Credit will use to redesign your room
+            </p>
+          </div>
         </div>
-      </div>
-      <CustomLoading loading={loading} />
-      {showAiOutputDialog ? (
-        <AiOutputDialog
-          openDialog={showAiOutputDialog}
-          setCloseDialog={() => setShowAiOutputDialog(false)}
-          originalImage={originalImageUrl}
-          aiGeneratedImage={aiImageOutputUrl}
+        <CustomLoading loading={loading} />
+        {showAiOutputDialog ? (
+          <AiOutputDialog
+            openDialog={showAiOutputDialog}
+            setCloseDialog={() => handleClosePreview}
+            originalImage={originalImageUrl}
+            aiGeneratedImage={aiImageOutputUrl}
+            blurUrl={blurDataURL}
+          />
+        ) : null}
+        <CreditLimitAlertDialog
+          open={showCreditLimitDialog}
+          onOpenChange={setShowCreditLimitDialog}
         />
-      ) : null}
-      <CreditLimitAlertDialog
-        open={showCreditLimitDialog}
-        onOpenChange={setShowCreditLimitDialog}
-      />
-    </div>
+      </div>
+    </Container>
   );
 };
 

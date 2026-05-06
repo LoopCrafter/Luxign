@@ -8,6 +8,7 @@ type Props = {
   openDialog: boolean;
   originalImage: string;
   aiGeneratedImage: string;
+  blurUrl?: string;
   setCloseDialog: () => void;
 };
 
@@ -15,6 +16,7 @@ const AiOutputDialog: FC<Props> = ({
   openDialog,
   originalImage,
   aiGeneratedImage,
+  blurUrl,
   setCloseDialog,
 }) => {
   return openDialog ? (
@@ -35,7 +37,11 @@ const AiOutputDialog: FC<Props> = ({
             <ImageDown className="size-6 " />
             <span>Download</span>
           </Button>
-          <ImageCompare before={originalImage} after={aiGeneratedImage} />
+          <ImageCompare
+            before={originalImage}
+            after={aiGeneratedImage}
+            blurUrl={blurUrl}
+          />
         </div>
         <div className="flex items-end  w-full justify-end">
           <Button className="px-10 py-2" onClick={setCloseDialog}>

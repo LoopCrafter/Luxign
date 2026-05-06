@@ -18,4 +18,5 @@ export const AiGeneratedImage = pgTable("ai_generated_image", {
   originalImage: varchar("originalImage").notNull(),
   aiImage: varchar("aiImage").notNull(),
   userEmail: varchar("userEmail", { length: 255 }).notNull(),
+  blurDataUrl: varchar("blurDataUrl"),
 });

@@ -79,7 +79,9 @@ const DesignType: FC<Props> = ({ selectDesignType, error }) => {
   };
   return (
     <div className="mt-5">
-      <label className="text-gray-500">Select Interior Design Type</label>
+      <label className="text-slate-400 mb-2 block">
+        Select Interior Design Type
+      </label>
       <div className="grid grid-cols-2 mt-3 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {designs.map((design) => {
           return (

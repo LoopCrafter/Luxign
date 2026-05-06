@@ -13,4 +13,5 @@ export type RoomType = {
   originalImage: string;
   aiImage: string;
   id: number;
+  blurDataUrl?: string;
 };
