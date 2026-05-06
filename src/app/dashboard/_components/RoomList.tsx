@@ -50,6 +50,7 @@ const RoomList = ({ userRoomList }: RoomList) => {
         setCloseDialog={() => setShowAiOutputDialog(false)}
         originalImage={originalImageUrl}
         aiGeneratedImage={aiImageOutputUrl}
+        blurUrl={blurUrl}
       />
     </div>
   );
