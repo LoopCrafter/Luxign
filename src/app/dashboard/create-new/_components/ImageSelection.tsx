@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { ChangeEvent, FC, useRef, useState, DragEvent } from "react";
+import React, { ChangeEvent, FC, useRef, useState, DragEvent } from "react";
 
 type Props = {
   handleSelectedImage: (file: File | null) => void;
@@ -107,4 +107,4 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage, error, image }) => {
   );
 };
 
-export default ImageSelection;
+export default React.memo(ImageSelection);

@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import { FC } from "react";
+import React, { FC } from "react";
 
 const roomTypes = [
   {
@@ -56,4 +56,4 @@ const RoomTypes: FC<Props> = ({ selectedRoomType, error, defaultRoomType }) => {
   );
 };
 
-export default RoomTypes;
+export default React.memo(RoomTypes);

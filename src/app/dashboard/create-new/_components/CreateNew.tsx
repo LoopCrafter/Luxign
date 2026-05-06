@@ -4,7 +4,7 @@ import AdditionalReq from "./AdditionalReq";
 import DesignType from "./DesignType";
 import ImageSelection from "./ImageSelection";
 import RoomTypes from "./RoomTypes";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { z } from "zod";
 import { useUser } from "@clerk/nextjs";
 import CustomLoading from "./CustomLoading";
@@ -138,6 +138,26 @@ const CreateNew = () => {
     });
   };
 
+  const handleRoomType = useCallback(
+    (value: string) => onHandleInputChange(value, "roomType"),
+    [],
+  );
+
+  const handleDesignType = useCallback(
+    (value: string) => onHandleInputChange(value, "designType"),
+    [],
+  );
+
+  const handleAdditionalReq = useCallback(
+    (value: string) => onHandleInputChange(value, "additionalReq"),
+    [],
+  );
+
+  const handleImage = useCallback(
+    (value: File | null) => onHandleInputChange(value, "image"),
+    [],
+  );
+
   return (
     <Container>
       <div className="p-6">
@@ -151,29 +171,23 @@ const CreateNew = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-6 justify-center mt-10">
           <ImageSelection
             image={formData.image}
-            handleSelectedImage={(value) => onHandleInputChange(value, "image")}
+            handleSelectedImage={handleImage}
             error={formErrors.image}
           />
           <div>
             <RoomTypes
               defaultRoomType={formData.roomType}
-              selectedRoomType={(value) =>
-                onHandleInputChange(value, "roomType")
-              }
+              selectedRoomType={handleRoomType}
               error={formErrors.roomType}
             />
             <DesignType
               defaultValue={formData.designType}
-              selectDesignType={(value) =>
-                onHandleInputChange(value, "designType")
-              }
+              selectDesignType={handleDesignType}
               error={formErrors.designType}
             />
             <AdditionalReq
               defaultValue={formData.additionalReq}
-              additionalRequirementInput={(value) =>
-                onHandleInputChange(value, "additionalReq")
-              }
+              additionalRequirementInput={handleAdditionalReq}
             />
             <Button className="w-full mt-5" onClick={validateForm}>
               Generate

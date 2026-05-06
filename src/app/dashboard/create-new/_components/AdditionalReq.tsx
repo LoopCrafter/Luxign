@@ -1,6 +1,6 @@
 "use client";
 import { Textarea } from "@/src/components/ui/textarea";
-import { FC } from "react";
+import React, { FC } from "react";
 
 type Prop = {
   additionalRequirementInput: (value: string) => void;
@@ -24,4 +24,4 @@ const AdditionalReq: FC<Prop> = ({
   );
 };
 
-export default AdditionalReq;
+export default React.memo(AdditionalReq);

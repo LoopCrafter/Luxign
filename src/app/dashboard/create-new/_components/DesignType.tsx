@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 const designs = [
   {
@@ -102,4 +102,4 @@ const DesignType: FC<Props> = ({ selectDesignType, error, defaultValue }) => {
   );
 };
 
-export default DesignType;
+export default React.memo(DesignType);
