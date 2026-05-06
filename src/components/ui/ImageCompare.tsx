@@ -60,6 +60,7 @@ export const ImageCompare: React.FC<ImageCompareProps> = ({
       ref={containerRef}
       className={`relative w-full h-full overflow-hidden rounded-2xl select-none ${className}`}
     >
+      <div className="absolute h-20 w-full top-0 left-0 bg-gradient-to-b from-gray-400 via-gray-200/30 to-transparent z-1"></div>
       {/* BEFORE (full) */}
       <Image
         src={before}

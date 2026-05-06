@@ -150,23 +150,27 @@ const CreateNew = () => {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-6 justify-center mt-10">
           <ImageSelection
+            image={formData.image}
             handleSelectedImage={(value) => onHandleInputChange(value, "image")}
             error={formErrors.image}
           />
           <div>
             <RoomTypes
+              defaultRoomType={formData.roomType}
               selectedRoomType={(value) =>
                 onHandleInputChange(value, "roomType")
               }
               error={formErrors.roomType}
             />
             <DesignType
+              defaultValue={formData.designType}
               selectDesignType={(value) =>
                 onHandleInputChange(value, "designType")
               }
               error={formErrors.designType}
             />
             <AdditionalReq
+              defaultValue={formData.additionalReq}
               additionalRequirementInput={(value) =>
                 onHandleInputChange(value, "additionalReq")
               }
@@ -183,7 +187,7 @@ const CreateNew = () => {
         {showAiOutputDialog ? (
           <AiOutputDialog
             openDialog={showAiOutputDialog}
-            setCloseDialog={() => handleClosePreview}
+            setCloseDialog={handleClosePreview}
             originalImage={originalImageUrl}
             aiGeneratedImage={aiImageOutputUrl}
             blurUrl={blurDataURL}

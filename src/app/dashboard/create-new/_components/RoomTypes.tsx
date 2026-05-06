@@ -33,16 +33,17 @@ const roomTypes = [
 type Props = {
   selectedRoomType: (value: string) => void;
   error?: string;
+  defaultRoomType: string;
 };
-const RoomTypes: FC<Props> = ({ selectedRoomType, error }) => {
+const RoomTypes: FC<Props> = ({ selectedRoomType, error, defaultRoomType }) => {
   return (
     <div>
       <label className="text-slate-400 mb-2 block">Select Room Type *</label>
-      <Select onValueChange={selectedRoomType}>
+      <Select value={defaultRoomType} onValueChange={selectedRoomType}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Room Type" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent defaultValue={defaultRoomType}>
           {roomTypes.map((type) => (
             <SelectItem key={type.id} value={type.title}>
               {type.title}

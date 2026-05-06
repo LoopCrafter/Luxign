@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 const designs = [
   {
@@ -68,15 +68,10 @@ const designs = [
 type Props = {
   selectDesignType: (value: string) => void;
   error?: string;
+  defaultValue: string;
 };
 
-const DesignType: FC<Props> = ({ selectDesignType, error }) => {
-  const [selectedDesignType, setSelectedDesignType] = useState("");
-
-  const handleSelectDesignType = (value: string) => {
-    setSelectedDesignType(value);
-    selectDesignType(value);
-  };
+const DesignType: FC<Props> = ({ selectDesignType, error, defaultValue }) => {
   return (
     <div className="mt-5">
       <label className="text-slate-400 mb-2 block">
@@ -84,20 +79,16 @@ const DesignType: FC<Props> = ({ selectDesignType, error }) => {
       </label>
       <div className="grid grid-cols-2 mt-3 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {designs.map((design) => {
+          const isSelected = defaultValue === design.title;
           return (
-            <div
-              key={design.id}
-              onClick={() => handleSelectDesignType(design.title)}
-            >
+            <div key={design.id} onClick={() => selectDesignType(design.title)}>
               <Image
                 src={design.image}
                 alt={design.title}
                 width={200}
                 height={200}
                 className={`h-[100px] md:h-[90px] w-full rounded-md hover:scale-105 transition-all cursor-pointer false ${
-                  selectedDesignType === design.title
-                    ? " border-2 border-primary rounded-md p-1"
-                    : ""
+                  isSelected ? "border-2 border-primary p-1" : ""
                 }`}
                 loading="lazy"
               />

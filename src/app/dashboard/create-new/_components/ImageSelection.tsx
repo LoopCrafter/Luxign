@@ -3,17 +3,16 @@ import Image from "next/image";
 import { ChangeEvent, FC, useRef, useState, DragEvent } from "react";
 
 type Props = {
-  handleSelectedImage: (file: File) => void;
+  handleSelectedImage: (file: File | null) => void;
+  image: File | null;
   error?: string;
 };
 
-const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
-  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+const ImageSelection: FC<Props> = ({ handleSelectedImage, error, image }) => {
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = (file: File) => {
-    setSelectedImageFile(file);
     handleSelectedImage(file);
   };
 
@@ -48,7 +47,7 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
           mt-3 rounded-xl border-2 border-dashed cursor-pointer
           transition-all flex items-center justify-center
           text-center relative overflow-hidden
-          ${selectedImageFile ? "p-2 bg-white" : "p-20"}
+          ${image ? "p-2 bg-white" : "p-20"}
           ${
             isDragging
               ? "border-blue-500 bg-blue-50"
@@ -56,7 +55,7 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
           }
         `}
       >
-        {!selectedImageFile ? (
+        {!image ? (
           <div className="flex flex-col items-center gap-2 text-gray-500">
             <Image
               src="/images/upload.png"
@@ -74,7 +73,7 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
         ) : (
           <div className="relative w-full">
             <Image
-              src={URL.createObjectURL(selectedImageFile)}
+              src={URL.createObjectURL(image)}
               alt=""
               width={500}
               height={500}
@@ -84,7 +83,7 @@ const ImageSelection: FC<Props> = ({ handleSelectedImage, error }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedImageFile(null);
+                handleSelectedImage(null);
               }}
               className="absolute top-2 right-2 bg-black/60 text-white px-2 py-1 rounded-md text-xs"
             >
