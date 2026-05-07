@@ -4,11 +4,18 @@ import Loading from "./_components/Loading";
 import { Container } from "@/src/components/layout/Container";
 import DashboardSkeleton from "./_components/DashboardSkeleton";
 
-const DashboardPage = () => {
+type Props = {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+};
+
+const DashboardPage = async ({ searchParams }: Props) => {
+  const params = await searchParams;
   return (
     <Container>
       <Suspense fallback={<DashboardSkeleton />}>
-        <History />
+        <History page={Number(params.page) || 1} />
       </Suspense>
     </Container>
   );

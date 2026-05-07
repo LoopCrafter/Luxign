@@ -1,18 +1,26 @@
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from "next/server";
+import { count, desc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { AiGeneratedImage } from "@/db/schema";
-import { auth, clerkClient } from "@clerk/nextjs/server";
-import { desc, eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const { userId } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const searchParams = req.nextUrl.searchParams;
+
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 6;
+
+  const offset = (page - 1) * limit;
+
   const client = await clerkClient();
   const user = await client.users.getUser(userId);
+
   const userEmail = user?.primaryEmailAddress?.emailAddress;
 
   if (!userEmail) {
@@ -26,7 +34,30 @@ export async function GET() {
     .select()
     .from(AiGeneratedImage)
     .where(eq(AiGeneratedImage.userEmail, userEmail))
-    .orderBy(desc(AiGeneratedImage.id));
+    .orderBy(desc(AiGeneratedImage.id))
+    .limit(limit)
+    .offset(offset);
 
-  return NextResponse.json({ result }, { status: 200 });
+  const [totalCountResult] = await getDb()
+    .select({
+      count: count(),
+    })
+    .from(AiGeneratedImage)
+    .where(eq(AiGeneratedImage.userEmail, userEmail));
+
+  const totalCount = totalCountResult.count;
+
+  const totalPages = Math.ceil(totalCount / limit);
+
+  return NextResponse.json(
+    {
+      result,
+      pagination: {
+        page,
+        limit,
+        totalPages,
+      },
+    },
+    { status: 200 },
+  );
 }
