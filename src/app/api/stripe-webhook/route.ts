@@ -9,7 +9,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   const body = await req.text();
-  console.log("hamed1", body);
   const signature = (await headers()).get("stripe-signature");
 
   if (!signature) {
@@ -32,7 +31,7 @@ export async function POST(req: Request) {
     const session = event.data.object;
 
     const userId = session.metadata?.userId;
-    console.log("hamed2", userId);
+
     const credits = Number(session.metadata?.credits);
     const db = getDb();
     try {

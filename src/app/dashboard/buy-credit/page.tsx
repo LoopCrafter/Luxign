@@ -11,7 +11,7 @@ const BuyCreditPage = () => {
   return (
     <Container>
       <div className="p-6">
-        <div>
+        <div className="mb-5">
           <h2 className="font-bold text-2xl">Buy More Credits</h2>
           <p>
             Unlock endless possibilities – Buy more credits and transform your
