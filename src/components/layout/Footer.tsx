@@ -6,13 +6,13 @@ const links = [
   {
     id: 1,
     title: "Privacy Policy",
-    link: "/privacy",
+    link: "/privacy-policy",
     icon: <Shield className="size-5" />,
   },
   {
     id: 2,
     title: "Terms of Service",
-    link: "/terms",
+    link: "/terms-of-service",
     icon: <FileText className="size-5" />,
   },
   {
