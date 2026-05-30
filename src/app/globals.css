@@ -130,6 +130,9 @@
       hsl(262 30% 14%) 100%
     );
   }
+  .input {
+    @apply w-full px-4 py-3 border border-[#e5e7eb] rounded-lg bg-white outline-0;
+  }
 }
 
 .loader {
