@@ -70,14 +70,17 @@ export async function POST(request: Request) {
     const input = {
       image,
       prompt: `
-        Highly detailed, photorealistic ${designType} interior design of a ${roomType}.
-        Wide-angle architectural photography, 24mm lens, ultra realistic rendering, global illumination, soft natural daylight coming from large windows.
-        Interior styling with premium materials, attention to textures (wood, stone, fabric, metal), depth and spatial balance.
+[Task: Architectural Interior Transformation]
+[Context: Image-to-Image spatial alignment]
 
-        ${additionalReq ? `${additionalReq},` : ""}
+Structure: ${designType} style interior architecture of a ${roomType}.
+Composition: Wide-angle 24mm architectural photography, straight-on eye-level perspective, spatial balance.
+Lighting: Volumetric global illumination, soft diffused natural daylight streaming from large windows, realistic ambient occlusion shadows.
+Materials & Textures: Premium tactile surfaces, visible organic wood grain, polished matte stone, high-fidelity woven fabric textiles, brushed metal accents.
+Visual Style: Professional interior design editorial, clean minimalist aesthetic, neutral balanced color grading, deep depth of field with sharp focus throughout.
 
-        Cinematic composition, clean minimal aesthetic, professional interior design magazine quality, ultra high resolution, sharp focus, depth of field, natural shadows, perfectly balanced color grading.
-          `.trim(),
+${additionalReq ? `Modifications: ${additionalReq.trim()}` : ""}
+  `.trim(),
     };
 
     const output = await replicate.run(
