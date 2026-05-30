@@ -3,12 +3,22 @@
 import { createCheckoutSession } from "@/src/lib/actions/stripe";
 import { CREDIT_PLANS } from "@/src/lib/constants/plans";
 import { CreditPlan } from "@/src/types";
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 const Plans = () => {
+  const summaryRef = useRef<HTMLDivElement | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<CreditPlan | null>(null);
 
   const [pending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (selectedPlan) {
+      summaryRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [selectedPlan]);
 
   const handleCheckout = () => {
     if (!selectedPlan) return;
@@ -43,7 +53,10 @@ const Plans = () => {
       </div>
 
       {selectedPlan && (
-        <div className="border rounded-xl p-6 shadow-md max-w-md mx-auto space-y-5">
+        <div
+          ref={summaryRef}
+          className="border rounded-xl p-6 shadow-md max-w-md mx-auto space-y-5"
+        >
           <div>
             <h2 className="text-2xl font-bold">Order Summary</h2>
 
