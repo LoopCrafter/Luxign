@@ -3,11 +3,14 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { getDb } from "@/db";
 import { Users } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+import { sql } from "drizzle-orm";
 
 export async function POST(req: Request) {
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+
+  if (!stripeKey) {
+    throw new Error("STRIPE_SECRET_KEY is missing");
+  }
   const body = await req.text();
   const signature = (await headers()).get("stripe-signature");
 
@@ -17,6 +20,7 @@ export async function POST(req: Request) {
 
   let event: Stripe.Event;
 
+  const stripe = new Stripe(stripeKey);
   try {
     event = stripe.webhooks.constructEvent(
       body,
